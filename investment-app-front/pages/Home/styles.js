@@ -6,7 +6,6 @@ export const MainContent = styled.div`
     left: 50%;
     transform: translate(-50%, 0);
     width: 80%;
-    
     background-color: transparent;
     padding: 100px;
     display: flex;
