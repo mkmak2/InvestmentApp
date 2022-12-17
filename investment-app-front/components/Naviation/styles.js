@@ -20,4 +20,5 @@ export const StyledLink = styled(Link)`
     color: #B2B2B2;
     margin-bottom: 10px;
     transition: 0.3s;
+    padding-top: 10px;
 `;

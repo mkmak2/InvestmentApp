@@ -8,6 +8,7 @@ import {
 import SidePanel from '../../components/SidePanel';
 import Image from 'next/image';
 import Slider from '../../components/Slider';
+import { StyledHeader } from '../Investments/styles';
 
 const Home = () => {
 	return (
