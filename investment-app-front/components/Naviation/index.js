@@ -4,8 +4,8 @@ const Navigation = () => {
 	return (
 		<StyledNavbar>
 			<StyledLink href='/Home'>Strona Głowna</StyledLink>
-			<StyledLink href='/'>Przegląd Inwestycji</StyledLink>
-			<StyledLink href='/'>Profil</StyledLink>
+			<StyledLink href='/Investments'>Przegląd Inwestycji</StyledLink>
+			<StyledLink href='/Profile'>Profil</StyledLink>
 		</StyledNavbar>
 	);
 };
