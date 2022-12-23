@@ -1,31 +1,37 @@
 import { MainContent, StyledHeader } from './styles';
-import SidePanel from '../../components/SidePanel/index'
+import SidePanel from '../../components/SidePanel/index';
+import SingleInvestmentMini from '../../components/SingleInvestmentMini/index';
 
-const Investments = () => {
-    return ( 
-        <>
-        <SidePanel>
+const Investments = ({ data }) => {
+	return (
+		<>
+			<SidePanel></SidePanel>
+			<MainContent>
+				<StyledHeader>
+                    <h1>Lista Inwestycji</h1>
+				</StyledHeader>
+                <div className="list">
+					{data.map(item => (
+						<SingleInvestmentMini
+							company={item.data.Name}
+							type={item.data.Sector}
+							price='1000000USD'
+							lastUpdate='hejhej'
+						/>
+					))}
+                </div>
+			</MainContent>
+		</>
+	);
+};
 
-        </SidePanel>
-        <MainContent>
-            <StyledHeader>
-                <h1>Lista Inwestycji</h1>
+export async function getStaticProps() {
+	const res = await fetch('http://127.0.0.1:8000/api');
+	const data = await res.json();
 
-            </StyledHeader>
-        </MainContent>
-        </>
-     );
+	return {
+		props: { data },
+	};
 }
 
-export async function getStaticProps(){
-    const res = await fetch('http://127.0.0.1:8000/api')
-    const post = res['Symbol'].json();
-
-
-    return{
-        props:
-            post
-    };
-}
- 
 export default Investments;
