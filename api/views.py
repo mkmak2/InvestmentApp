@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from .form import UploadForm, UploadForm2
-from .models import StockData, StockInfo
+from .models import StockData, StockInfo, StockInfoAd
 from django.core.cache import caches
 from rest_framework import generics
-from .serializers import StockInfoSerializer
+from .serializers import StockInfoSerializer, StockInfoAdSerializer
 
 import requests
 import json
@@ -49,10 +49,23 @@ def upload(request):
         return redirect(home)
     return render(request, 'upload.html', {'form' : UploadForm})
 
+def upload2(request):
+    if request.POST:
+        form = UploadForm2(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request, 'upload2.html', {'form' : UploadForm2})
+
+
 
 class StockInfoListView(generics.ListAPIView):
     queryset = StockInfo.objects.all()
     serializer_class = StockInfoSerializer
+
+class StockInfoListViewSym(generics.ListAPIView):
+    queryset = StockInfoAd.objects.all()
+    serializer_class = StockInfoAdSerializer
+
 
 @csrf_exempt
 def get_stock_data(request):
