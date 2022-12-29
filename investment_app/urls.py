@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 import api.views
+import acc_management.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,4 +12,5 @@ urlpatterns = [
     path("api-sym/", api.views.StockInfoListViewSym.as_view(), name="store_home"),
     path("", api.views.home),
     path('get_stock_data/', api.views.get_stock_data),
+    path("acc_management/", acc_management.views.UserDataView.as_view(), name="UserData"),
 ]
