@@ -10,6 +10,7 @@ class UploadForm(ModelForm):
 
 class UploadForm2(ModelForm):
     symbol = forms.TextInput()
+    data = forms.TextInput()
     class Meta:
         model = StockInfoAd
-        fields = ['symbol']
+        fields = ['symbol', 'data']
