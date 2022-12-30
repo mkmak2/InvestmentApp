@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from .form import UploadForm, UploadForm2
-from .models import StockData, StockInfo, StockInfoAd
+from .models import StockData, StockInfo, StockInfoAd, StockInfoA
 from django.core.cache import caches
 from rest_framework import generics
-from .serializers import StockInfoSerializer, StockInfoAdSerializer
+from .serializers import StockInfoSerializer, StockInfoAdSerializer, StockInfoASerializer
 
 import requests
 import json
@@ -65,6 +65,12 @@ class StockInfoListView(generics.ListAPIView):
 class StockInfoListViewSym(generics.ListAPIView):
     queryset = StockInfoAd.objects.all()
     serializer_class = StockInfoAdSerializer
+
+class StockInfoViewSym(generics.RetrieveAPIView):
+    lookup_field="symbol"
+    queryset = StockInfoA.objects.all()
+    serializer_class = StockInfoASerializer
+
 
 
 @csrf_exempt
