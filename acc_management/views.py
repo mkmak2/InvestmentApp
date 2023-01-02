@@ -9,12 +9,12 @@ from rest_framework.decorators import api_view
 
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 import json
 
-@require_POST
+@require_http_methods(["GET","POST"])
 def loginView(request):
     data = json.loads(request.body)
     username = data.get("username")

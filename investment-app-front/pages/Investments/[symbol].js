@@ -1,12 +1,12 @@
 import { StyledHeader } from './styles';
 
 export const getStaticPaths = async () => {
-	const res = await fetch('http://127.0.0.1:8000/api');
+	const res = await fetch('http://127.0.0.1:8000/api-sym');
 	const data = await res.json();
 
 	const paths = data.map(item => {
 		return {
-			params: { symbol: item.data.Symbol },
+			params: { symbol: item.symbol },
 		};
 	});
 
@@ -18,7 +18,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async context => {
 	const symbol = context.params.symbol;
-	const res = await fetch('http://127.0.0.1:8000/api/' + symbol);
+	const res = await fetch('http://127.0.0.1:8000/api-sym/' + symbol);
 	const data = await res.json();
 
 	return {
