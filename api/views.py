@@ -23,6 +23,9 @@ DATABASE_ACCESS = True
 def home(request):
     return render(request, 'home.html', {})
 
+def home2(request):
+    return render(request, 'StockInfoSym.html', {})
+
 def Stc(request, StockInfo_id):
     stock = StockInfo.objects.get(pk = StockInfo_id)
     if stock is not None:
@@ -63,8 +66,8 @@ class StockInfoListView(generics.ListAPIView):
     serializer_class = StockInfoSerializer
 
 class StockInfoListViewSym(generics.ListAPIView):
-    queryset = StockInfoAd.objects.all()
-    serializer_class = StockInfoAdSerializer
+    queryset = StockInfoA.objects.all()
+    serializer_class = StockInfoASerializer
 
 class StockInfoViewSym(generics.RetrieveAPIView):
     lookup_field="symbol"
@@ -75,7 +78,6 @@ class StockInfoViewSym(generics.RetrieveAPIView):
 
 @csrf_exempt
 def get_stock_data(request):
-        #get ticker from the AJAX POST request
         ticker = request.POST.get('ticker', 'null')
         ticker = ticker.upper()
 
@@ -90,13 +92,40 @@ def get_stock_data(request):
         #get adjusted close data
         price_series = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol={ticker}&apikey={APIKEY}&outputsize=full').json()
         
-        #get SMA (simple moving average) data
         #package up the data in an output dictionary 
         output_dictionary = {}
         output_dictionary['prices'] = price_series
 
         #save the dictionary to database
         temp = StockData(symbol=ticker, data=json.dumps(output_dictionary))
+        temp.save()
+
+        #return the data back to the frontend AJAX call 
+        return HttpResponse(json.dumps(output_dictionary), content_type='application/json')
+
+@csrf_exempt
+def get_stock_info(request):
+        ticker = request.POST.get('ticker', 'null')
+        ticker = ticker.upper()
+
+        if DATABASE_ACCESS == True:
+            #checking if the database already has data stored for this ticker before querying the Alpha Vantage API
+            if StockInfoA.objects.filter(symbol=ticker).exists(): 
+                #We have the data in our database! Get the data from the database directly and send it back to the frontend AJAX call
+                entry = StockInfoA.objects.filter(symbol=ticker)[0]
+                return HttpResponse(entry.data, content_type='application/json')
+
+        #obtain stock data from Alpha Vantage APIs
+        #get adjusted close data
+        info = requests.get(f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={APIKEY}').json()
+
+        
+        #package up the data in an output dictionary 
+        output_dictionary = {}
+        output_dictionary['info'] = info
+
+        #save the dictionary to database
+        temp = StockInfoA(symbol=ticker, data=json.dumps(output_dictionary))
         temp.save()
 
         #return the data back to the frontend AJAX call 

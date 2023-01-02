@@ -16,4 +16,4 @@ class StockInfoAd(models.Model):
 
 class StockInfoA(models.Model):
     symbol = models.SlugField(max_length=20)
-    data = models.JSONField(null=True)
+    data = models.TextField(null=True)
