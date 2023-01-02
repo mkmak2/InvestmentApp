@@ -1,43 +1,117 @@
 import styled from 'styled-components';
 
+export const MainContainer = styled.div`
+	position: absolute;
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	background: linear-gradient(135deg, black 30%, #3b3b3b);
 
-export const MainContent = styled.div`
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 80%;
-    background-color: transparent;
-    padding: 100px;
-    display: flex;
-    flex-direction: column;
-    color: #F3EFE0;
-    margin-bottom: 100px;
 `;
 
+export const LeftPanel = styled.div`
+	position: relative;
+	width: 60%;
+	height: 100%;
+	background: linear-gradient(135deg, black 30%, #3b3b3b);
 
-export const DescriptionContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
+	.header {
+		position: relative;
+		left: 100px;
+		top: 20px;
+		color: #fff;
+
+		p {
+			margin-top: ${props => props.distance}px;
+			margin-bottom: ${props => props.distance}px;
+			transition: 1s;
+		}
+	}
+
+	.line {
+		position: relative;
+		background-color: #E6B325;
+		height: 3px;
+		width: 800px;
+		left: 50%;
+		transform: translate(-50%, 0);
+		top: 5%;
+	}
+
+	.description {
+		position: relative;
+		left: 100px;
+		top: 20%;
+		color: ${props => props.display};
+		line-height: 25px;
+		width: 600px;
+		text-align: justify;
+		transition: 1s;
+	}
+
+    .slider{
+        position: absolute;
+        width: 90%;
+        height: 450px;
+        background-color: red;
+        left: 5%;
+        bottom: 10px;
+    }
+
+	.icon {
+		position: absolute;
+		left: 50px;
+		bottom: ${props => props.position}px;
+		width: 40px;
+		height: 40px;
+		color: #E6B325;
+		font-size: 30px;
+		transition: 1s;
+		transform: rotate(${props => props.rotate}deg);
+	}
+
+	.icon:hover {
+		cursor: pointer;
+	}
 `;
 
-export const Description = styled.div`
-    width:50%;
+export const RightPanel = styled.div`
+	position: relative;
+	width: 40%;
+	height: 100%;
+	background-image: url('mainImage.jpg');
+	background-size: cover;
+	background-position: bottom;
+
+	.button-box {
+		position: relative;
+		left: 50%;
+		top: 420px;
+		transform: translate(-50%, 0%);
+		color: #fff;
+		font-size: 20px;
+		width: 300px;
+		height: 200px;
+		text-align: center;
+		padding: 10px;
+
+		button:hover {
+			width: 40%;
+			height: 40px;
+			font-size: 10px;
+			cursor: pointer;
+		}
+	}
 `;
 
-export const Wraper = styled.div`
-    display: flex;
-    margin-top: 100px;
-    flex-direction: column;
-    justify-contetn: space-between;
-    width:100%;
-    border-top: 1px solid #BF9742;
+export const StyledButton = styled.button`
+	width: 50%;
+	height: 50px;
+	border: none;
+	background-color: #3b3b3b;
+	color: #E6B325;
+	border-radius: 20px;
+	font-size: 15px;
+	margin-top: 10px;
+	transition: 0.5s; ;
 `;
-
-export const InfoWraper = styled.div`
-    border-top: 1px solid #BF9742;
-    margin-top: 100px;
-`;
-
-
-
-

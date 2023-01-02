@@ -1,56 +1,66 @@
-import {
-	MainContent,
-	Description,
-	DescriptionContainer,
-	Wraper,
-	InfoWraper
-} from './styles';
-import SidePanel from '../../components/SidePanel';
-import Image from 'next/image';
+import Navigation from '../../components/Naviation';
+import { MainContainer, LeftPanel, RightPanel, StyledButton } from './styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 import Slider from '../../components/Slider';
-import { StyledHeader } from '../Investments/styles';
 
 const Home = () => {
-	return (
-		<>
-		<SidePanel />
-		<MainContent>
-			<DescriptionContainer>
-				<Description>
-					<h1>Co zawiera strona?</h1>
-					<p>
-						Tutaj sie wpierdoli opis strony, który wymyślimy ale póki co daje
-						jakieś przykładowe pierdoły. Lorem ipsum dolor sit, amet consectetur
-						adipisicing elit. Ipsa cum nobis soluta unde accusantium minus
-						voluptatum libero at, totam, repellat tempora nulla ab perferendis
-						corporis quibusdam voluptates vero sequi minima?Lorem ipsum dolor
-						sit amet consectetur adipisicing elit. Ipsum soluta odit ullam
-						similique repellat voluptatibus dolorum, saepe quis nulla ea facilis
-						adipisci laborum ipsa, aliquid nam ducimus maiores praesentium
-						fugiat.
-					</p>
-				</Description>
-				<div>
-					<Image src='/descriptionImage.jpg' width={400} height={250} />
+	const [mode, setMode] = useState(true);
+	const [displayMode, setDisplayMode] = useState(true);
+
+	const handleClick = () => {
+		setMode(!mode);
+		setTimeout(() => setDisplayMode(!displayMode), 1000);
+	};
+
+	//zmiany stylów dla opisu
+	const distance = mode ? 50 : 0;
+	const display = mode ? '#fff' : 'transparent';
+	const rotate = mode ? '0' : '180';
+	const position = mode ? '50' : '480';
+	
+	//zmiany stylów dla slidera
+	const whiteColor = mode ? 'transparent' : '#fff';
+	const yellowColor = mode ? 'transparent' : '#E6B325';
+
+	return (	
+		<MainContainer>
+			<LeftPanel
+				distance={distance}
+				display={display}
+				rotate={rotate}
+				position={position}>
+				<div className='header'>
+					<p style={{ fontSize: 50 }}>Find your future</p>
+					<p style={{ fontSize: 70, color: ' #E6B325' }}>Investment</p>
 				</div>
-			</DescriptionContainer>
+				<div className='line'></div>
+				{displayMode ? (
+					<div className='description'>
+						Our app is a place where the most attractive investment offers are
+						stored. We share you, a common ways to find an investment that fit
+						you. To choose the perfect one, and be sure of your choice, you can
+						also compare diffrent investments, read about company and watch how
+						price was changing for years.
+					</div>
+				) : (
+					<Slider whiteColor={whiteColor} yellowColor={yellowColor}/>
+				)}
 
-			<Wraper>
-				<h1>Możliwości strony</h1>
-				<Slider />
-			</Wraper>
-
-			<InfoWraper>
-				<h1>Skąd pobieramy dane?</h1>
-				<p>TUTAJ BĘDZIE OPIS SKĄD BIERZEMY DANE ITP Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus deleniti animi laudantium natus possimus error accusantium fugiat nemo consectetur laborum, quisquam vero voluptas labore maxime dignissimos ipsum nihil quidem voluptatibus? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet tempore sit, nihil rerum aspernatur dolore, sapiente delectus molestias placeat amet, temporibus ducimus nam consequatur? Incidunt inventore sapiente iste laborum tempore?</p>
-				<ul>
-					<li>NAZWA STRONY NR 1</li>
-					<li>NAZWA STRONY NR 2</li>
-					<li>NAZWA STRONY NR 3</li>
-				</ul>
-			</InfoWraper>
-		</MainContent>
-		</>
+				<div className='icon' onClick={handleClick}>
+					<FontAwesomeIcon icon={faCircleUp} />
+				</div>
+			</LeftPanel>
+			<RightPanel>
+				<Navigation />
+				<div className='button-box'>
+					One app,
+					<br /> to find them all...
+					<StyledButton>Explore</StyledButton>
+				</div>
+			</RightPanel>
+		</MainContainer>
 	);
 };
 
