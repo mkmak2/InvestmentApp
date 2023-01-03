@@ -1,5 +1,3 @@
-import { StyledHeader } from './styles';
-
 export const getStaticPaths = async () => {
 	const res = await fetch('http://127.0.0.1:8000/api-sym');
 	const data = await res.json();
@@ -23,15 +21,13 @@ export const getStaticProps = async context => {
 
 	return {
 		props: { investment: data },
-	};
+	}; 
 };
 
 const InvestmentDeatlis = ({ investment }) => {
-	return (
-		<StyledHeader>
-			<h1>{investment.data.Name}</h1>
-		</StyledHeader>
-	);
+	console.log(investment);
+
+	return <h1>hej</h1>;
 };
 
 export default InvestmentDeatlis;
