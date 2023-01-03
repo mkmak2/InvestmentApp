@@ -7,8 +7,9 @@ export const MainContent = styled.div`
 
    .header{
     height: 150px;
-    background-image: url('mainImage.jpg');
+    background: url('mainImage.jpg');
     background-size: cover;
+    background-position: center;    
     text-align: left;
     padding-left: 150px;
     padding-top: 50px;
