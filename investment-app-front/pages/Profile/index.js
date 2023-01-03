@@ -1,15 +1,27 @@
-import { MainContent, StyledHeader } from '../Investments/styles';
-import SidePanel from '../../components/SidePanel/index';
+import { LeftPanel, MainContainer, RightPanel   } from './styles';
+import Navigation from './../../components/Naviation/index';
+import LoginForm from '../../components/LoginForm/LoginForm';
+import RegisterForm from '../../components/RegisterForm/RegisterForm';
 
 const Profile = () => {
+
+
     return ( 
-        <>
-        <SidePanel />
-        <MainContent>
-            <StyledHeader><h1>Zarządzanie kontem</h1></StyledHeader>
-        </MainContent>
-        </>
-     );
+        <MainContainer>
+            <LeftPanel>
+                <div className="form-box">
+                    <LoginForm />
+                    <div className="line"></div>
+                    <RegisterForm />
+                </div>
+
+            </LeftPanel>
+
+            <RightPanel>
+                <Navigation />
+            </RightPanel>
+        </MainContainer>
+     )
 }
  
 export default Profile;

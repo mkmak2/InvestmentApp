@@ -1,76 +1,77 @@
-import { StyledSlider, StyledButton, Description } from './styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { StyledSlider } from './styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+	faMagnifyingGlassDollar,
+	faCaretLeft,
+	faCaretRight,
+	faChartSimple,
+	faCalculator,
+	faBook,
+} from '@fortawesome/free-solid-svg-icons';
 
-const Slider = () => {
-	const [count, SetCount] = useState(0);
+const Slider = ({ whiteColor, yellowColor }) => {
+	const [counter, setCounter] = useState(0);
+
 	const option = [
 		{
-			image: '4.jpg',
-			title: 'Przegląd inwestycji',
-			description:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa perspiciatis voluptas adipisci numquam modi obcaecati beatae. Dicta impedit velit ipsam atque? Sed accusantium ab ipsa neque a optio molestias ratione. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro impedit doloremque a dolor debitis tempora itaque quam quaerat quasi laudantium! Autem delectus quia assumenda numquam qui! Labore a optio ullam.',
+			title: 'Search investments',
+			info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, facere ad aut ut officia pariatur temporibus molestias modi id ipsum fugit, voluptate porro, laborum quasi rem quae eius nostrum eos.',
+			icon: faMagnifyingGlassDollar,
 		},
-        {
-			image: '5.jpg',
-			title: 'Symulujacja inwestycji',
-			description:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa perspiciatis voluptas adipisci numquam modi obcaecati beatae. Dicta impedit velit ipsam atque? Sed accusantium ab ipsa neque a optio molestias ratione. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro impedit doloremque a dolor debitis tempora itaque quam quaerat quasi laudantium! Autem delectus quia assumenda numquam qui! Labore a optio ullam.',
+		{
+			title: 'Compare charts',
+			info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, facere ad aut ut officia pariatur temporibus molestias modi id ipsum fugit, voluptate porro, laborum quasi rem quae',
+			icon: faChartSimple,
 		},
-        {
-			image: '1.jpg',
-			title: 'Predykcja ceny',
-			description:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa perspiciatis voluptas adipisci numquam modi obcaecati beatae. Dicta impedit velit ipsam atque? Sed accusantium ab ipsa neque a optio molestias ratione. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro impedit doloremque a dolor debitis tempora itaque quam quaerat quasi laudantium! Autem delectus quia assumenda numquam qui! Labore a optio ullam.',
+		{
+			title: 'Predict Price',
+			info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, facere ad aut ut officia pariatur temporibus molestias modi id ipsum fugit, voluptate porro, laborum quasi rem quae eius nostrum eos.gwergerwgqegbearvdfsbsnwtnwthqgqtw	qtwrfqw',
+			icon: faCalculator,
 		},
-        {
-			image: '2.jpg',
-			title: 'Kalkulator inwestycyjny - wirtualny portfel',
-			description:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa perspiciatis voluptas adipisci numquam modi obcaecati beatae. Dicta impedit velit ipsam atque? Sed accusantium ab ipsa neque a optio molestias ratione. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro impedit doloremque a dolor debitis tempora itaque quam quaerat quasi laudantium! Autem delectus quia assumenda numquam qui! Labore a optio ullam.',
+		{
+			title: "Learn about company's history",
+			info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, facere ad aut ut officia pariatur temporibus molestias modi id ipsum fugit, voluptate porro, laborum quasi rem quae eius nostrum eos.bqibffoiebfqefewgf',
+			icon: faBook,
 		},
-        {
-			image: '3.jpg',
-			title: 'Porónywanie wykresów',
-			description:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa perspiciatis voluptas adipisci numquam modi obcaecati beatae. Dicta impedit velit ipsam atque? Sed accusantium ab ipsa neque a optio molestias ratione. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro impedit doloremque a dolor debitis tempora itaque quam quaerat quasi laudantium! Autem delectus quia assumenda numquam qui! Labore a optio ullam.',
-		}
 	];
-	let activeOption = option[count];
 
-	const handleClick = side => {
-		if (!side) {
-			SetCount(count + 1);
-			if (count == option.length - 1) SetCount(0);
+	const handleSwap = side => {
+		if (side) {
+			if (counter < option.length - 1) setCounter(counter + 1);
+			else setCounter(0);
 		} else {
-			SetCount(count - 1);
-			if (count == 0) SetCount(option.length - 1);
+			if (counter > 0) setCounter(counter - 1);
+			else setCounter(option.length - 1);
 		}
 	};
 
-	return (
-		<>
-			<StyledSlider image={activeOption.image}>
-				<StyledButton onClick={() => handleClick(0)} style={{ left: 20 }}>
-					<FontAwesomeIcon
-						style={{ backgroundColor: 'transparent' }}
-						icon={faAngleLeft}
-					/>
-				</StyledButton>
-				<StyledButton onClick={() => handleClick(1)} style={{ right: 20 }}>
-					<FontAwesomeIcon
-						style={{ backgroundColor: 'transparent' }}
-						icon={faAngleRight}
-					/>
-				</StyledButton>
-			</StyledSlider>
+	const active = option[counter];
 
-			<Description>
-				<h2>{activeOption.title}</h2>
-				<p>{activeOption.description}</p>
-			</Description>
-		</>
+	return (
+		<StyledSlider active={counter+1} whiteColor={whiteColor} yellowColor={yellowColor}>
+			<div className='title'>
+				<h1>{active.title}</h1>
+			</div>
+			<div className='info'>{active.info}</div>
+			<div className='photo'>
+				<FontAwesomeIcon icon={active.icon} />
+			</div>
+			<div className='panel'>
+				<span onClick={() => handleSwap(0)}>
+					<FontAwesomeIcon icon={faCaretLeft} />
+				</span>
+				<div className='panelCounter'>
+					<div className='panelSingle'></div>
+					<div className='panelSingle'></div>
+					<div className='panelSingle'></div>
+					<div className='panelSingle'></div>
+				</div>
+				<span onClick={() => handleSwap(1)}>
+					<FontAwesomeIcon icon={faCaretRight} />
+				</span>
+			</div>
+		</StyledSlider>
 	);
 };
 

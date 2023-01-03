@@ -1,40 +1,48 @@
 import styled from 'styled-components';
 
-export const InvestmentBox = styled.div`
-    width: 700px;
-    display: flex;
-    color: #F3EFE0;
-    padding: 30px;
-    border: 1px solid black;
-    border-radius: 5px;
-    margin-top: 10px;
+export const Investment = styled.div`
+	border-radius: 15px;
+	width: 400px;
+	height: 300px;
+	background-color: rgba(34, 34, 34, 0.8);
+    margin-top: 50px;
+    color: #fff;
+    padding: 10px;
+    position: relative;
 
-    .actions{
+    .name{
+        color: #E6B325;
+        font-size: 20px;
+        border-bottom: 1px solid #E6B325;
+        padding-bottom: 5px;
+    }
+
+    .info{
         display: flex;
-        flex-direction: column;
         justify-content: space-around;
-        align-items: center;
-        padding: 20px;
-        border-left: 2px solid #BF9742;
-        margin-left: 20px;
-    }
+        flex-wrap: wrap;
 
-    button:hover{
-        cursor: pointer;
-        background-color: #191919;
-    }
+        span{
+            display: block;
+            width: 40%;
+            margin-top: 20px;
+        }
 
-    .description{
-        width: 70%;
+        p{
+            margin-top: 0;
+            color: grey;
+        }
     }
 `;
 
-export const StyledButton = styled.button`
-    background-color: #434242;
-    color: #BF9742;
-    border-radius: 5px; 
-    padding: 5px;
-    font-weight: bold;
-    border: none;
-    transition: 0.5s;
-`;  
+export const StyledButton = styled.div`
+    position: relative;
+    width: 30%;
+    height: 20px;
+    border-radius: 10px;
+    background-color: #E6B325;
+    left: 50%;
+    transform: translate(-50%, 0);
+    text-align: center;
+    color: black;
+`;
