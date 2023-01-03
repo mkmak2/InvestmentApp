@@ -1,70 +1,67 @@
 from django.shortcuts import render
-
-from rest_framework import generics, status, request, permissions
-from rest_framework.views import APIView
-from rest_framework.response import Response
-#from .models import UserData
-#from .serializers import UserDataSerializer
-from rest_framework.decorators import api_view
-
-from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
-import json
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import permissions
+from .serializers import UserDataSerializer
+from .models import UserData
 
-@require_POST
-def loginView(request):
-    data = json.loads(request.body)
-    username = data.get("username")
-    password = data.get("password")
 
-    if username is None or password is None:
-        return JsonResponse({"info":"Username and password is needed"})
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def userOverview(request):
+    api_urls = {
+        'List':'/user-list/',
+        'Detail View':'/user-detail/<str:pk>/',
+        'Create':'/user-create/',
+        'Update':'/user-update/<str:pk>/',
+        'Delete':'/user-delete/<str:pk>',
+ 
+    }
+    return Response(api_urls)
 
-    user = authenticate(username=username, password = password)
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def userList(request):
+    users = UserData.objects.all()
+    serializer = UserDataSerializer(users, many=True)
 
-    if user is None:
-        return JsonResponse({"info":"user does not exist"}, status = 400)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def userDetail(request, pk):
+    users = UserData.objects.get(id=pk)
+    serializer = UserDataSerializer(users, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['POST'])     #create
+@permission_classes((permissions.AllowAny,))
+def userCreate(request):
+    serializer = UserDataSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
         
-    login(request, user)
-    return JsonResponse({"info":"User logged in successfully"})
+    return Response(serializer.data)
 
-class WhoAmIView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
+@api_view(['POST'])     #update
+@permission_classes((permissions.AllowAny,))
+def userUpdate(request, pk):
+    users = UserData.objects.get(id=pk)
+    serializer = UserDataSerializer(instance=users, data=request.data)
 
-    @staticmethod
-    def get(request, format=None):
-        print(request.user.username)
-        return JsonResponse({"Username", request.user.username})
+    if serializer.is_valid():
+        serializer.save()
+        
+    return Response(serializer.data)
 
+@api_view(['DELETE'])     #delete
+@permission_classes((permissions.AllowAny,))
+def userDelete(request, pk):
+    users = UserData.objects.get(id=pk)
+    users.delete()
 
-'''
-
-# Create your views here.
-class UserDataView(generics.ListAPIView):
-    queryset = UserData.objects.all()
-    serializer_class = UserDataSerializer
-    
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-class CreateUserDataView(APIView):
-    serializer_class = UserDataSerializer
-    queryset = UserData.objects.all()
-
-    def post(self, request, format=None):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    return Response("Item deleted")
 
 
-'''

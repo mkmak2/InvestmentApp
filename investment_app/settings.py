@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
-    'acc_management',
+    'acc_management.apps.AccManagementConfig',
     
 ]
 
