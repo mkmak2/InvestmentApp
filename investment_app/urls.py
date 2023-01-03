@@ -11,6 +11,8 @@ urlpatterns = [
     path("api/", api.views.StockInfoListView.as_view(), name="store_home"), #zwrot danych wszystkich inwestycji
     path("api-sym/", api.views.StockInfoListViewSym.as_view(), name="store_home"),#to co wyżej z symbolem
     path("api-sym/<slug:symbol>/", api.views.StockInfoViewSym.as_view(), name="inwestycja"),#to co wyżej z symbolem
+    path("stock-sym/", api.views.StockDataListView.as_view(), name="store_home"),#ceny inwestycji
+    path("stock-sym/<slug:symbol>/", api.views.StockDataView.as_view(), name="inwestycja"),#ceny inwestycji, strona do dynamicznych
     path("2", api.views.home2),
     path("", api.views.home),
     path('get_stock_data/', api.views.get_stock_data),

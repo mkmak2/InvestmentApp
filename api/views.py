@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .form import UploadForm, UploadForm2
-from .models import StockData, StockInfo, StockInfoAd, StockInfoA
+from .models import StockData, StockInfo, StockInfoA
 from django.core.cache import caches
 from rest_framework import generics
-from .serializers import StockInfoSerializer, StockInfoAdSerializer, StockInfoASerializer
+from .serializers import StockInfoSerializer, StockInfoASerializer, StockDataSerializer
 
 import requests
 import json
@@ -65,6 +65,15 @@ class StockInfoListView(generics.ListAPIView):
     queryset = StockInfo.objects.all()
     serializer_class = StockInfoSerializer
 
+class StockDataListView(generics.ListAPIView):
+    queryset = StockData.objects.all()
+    serializer_class = StockDataSerializer
+
+class StockDataView(generics.RetrieveAPIView):
+    lookup_field="symbol"
+    queryset = StockData.objects.all()
+    serializer_class = StockDataSerializer
+
 class StockInfoListViewSym(generics.ListAPIView):
     queryset = StockInfoA.objects.all()
     serializer_class = StockInfoASerializer
@@ -93,15 +102,12 @@ def get_stock_data(request):
         price_series = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol={ticker}&apikey={APIKEY}&outputsize=full').json()
         
         #package up the data in an output dictionary 
-        output_dictionary = {}
-        output_dictionary['prices'] = price_series
-
         #save the dictionary to database
-        temp = StockData(symbol=ticker, data=json.dumps(output_dictionary))
+        temp = StockData(symbol=ticker, data=price_series)
         temp.save()
 
         #return the data back to the frontend AJAX call 
-        return HttpResponse(json.dumps(output_dictionary), content_type='application/json')
+        return HttpResponse(json.dumps(temp.data), content_type='application/json')
 
 @csrf_exempt
 def get_stock_info(request):
