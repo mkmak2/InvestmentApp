@@ -121,12 +121,9 @@ def get_stock_info(request):
 
         
         #package up the data in an output dictionary 
-        output_dictionary = {}
-        output_dictionary['info'] = info
-
         #save the dictionary to database
-        temp = StockInfoA(symbol=ticker, data=json.dumps(output_dictionary))
+        temp = StockInfoA(symbol=ticker, data=info)
         temp.save()
 
         #return the data back to the frontend AJAX call 
-        return HttpResponse(json.dumps(output_dictionary), content_type='application/json')
+        return HttpResponse(json.dumps(temp.data), content_type='application/json')
