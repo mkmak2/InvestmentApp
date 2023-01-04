@@ -14,9 +14,11 @@ urlpatterns = [
     path("stock-sym/", api.views.StockDataListView.as_view(), name="store_home"),#ceny inwestycji
     path("stock-sym/<slug:symbol>/", api.views.StockDataView.as_view(), name="inwestycja"),#ceny inwestycji, strona do dynamicznych
     path("2", api.views.home2),
+    path("3", api.views.coll),
     path("", api.views.home),
     path('get_stock_data/', api.views.get_stock_data),
     path('get_stock_infosa/', api.views.get_stock_info),
+    path('collect_data/', api.views.collect_data),
    # path("acc_management/", av.UserDataView.as_view(), name="UserData"),
   #  path("acc_management2/", av.CreateUserDataView.as_view(), name="UserData2"),
     path("login/", av.loginView, name="api-login"),

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--<link rel="stylesheet" href="style.css">-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Stock Visualizer</title>
+</head>
+
+<body>
+<h2>Wbij info poprzez Symbol</h2>
+<br>
+
+<label for="ticker-input">Enter Symbol:</label>
+<input type="text" id="ticker-input">
+<input type="button" value="submit" id="submit-btn">
+<br>
+
+<div id="graph-area" style="height:80%; width:80%;">
+<canvas id="myChart"></canvas>
+</div>
+<br>
+
+<div>
+    Friendly reminder: if the graphing function stops working after several successful instances, don't worry! It is likely that you have reached the 5 requests/minute rate limit of the free Alpha Vantage API key. The graph should work again in the next minute or after you obtain a <a href="https://www.alphavantage.co/premium/" target="_blank">premium API key</a> with a higher rate limit.
+</div>
+
+<script>
+
+    $(document).ready(function(){
+        // Right after the page is loaded, we get the stock data (default to AAPL) from the Django backend (the 'get_stock_data' function) for plotting
+        $.ajax({
+              type: "POST",
+              url: "/collect_data/",
+              data: {
+                 'ticker': 'AAPL',
+              },
+              success: function (res, status) {
+                // AAPL's stock price and SMA data is now in the "res" object
+                var tickerDisplay = res['data']['2. Symbol'];
+
+
+              }
+        });
+    });
+
+    $('#submit-btn').click(function() {
+        // when the user specifies a new ticker, we call the Django backend (the 'get_stock_data' function) to get the stock data and refresh the graph. 
+        // obtain the ticker string from the input textbox
+        var tickerText = $('#ticker-input').val();
+        $.ajax({
+              type: "POST",
+              url: "/collect_data/",
+              data: {
+                 'ticker': tickerText,
+              },
+              success: function (res, status) {
+                // stock price and SMA data for the user-specified ticker is now in the "res" object
+                var tickerDisplay = res['data']['2. Symbol'];
+                 
+              }
+        });
+
+
+    });
+
+</script>
+
+</body>
+</html>
