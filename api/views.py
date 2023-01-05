@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .form import UploadForm, UploadForm2
-from .models import StockData, StockInfo, StockInfoAd, StockInfoA
+from .models import StockData, StockInfo, StockInfoA
 from django.core.cache import caches
 from rest_framework import generics
-from .serializers import StockInfoSerializer, StockInfoAdSerializer, StockInfoASerializer
+from .serializers import StockInfoSerializer, StockInfoASerializer, StockDataSerializer
+import time
 
 import requests
 import json
 
 
-APIKEY = 'my_alphav_api_key' 
+APIKEY = 'ER4AWBFVV1OVHR39' 
 #replace 'my_alphav_api_key' with your actual Alpha Vantage API key obtained from https://www.alphavantage.co/support/#api-key
 
 
@@ -25,6 +26,9 @@ def home(request):
 
 def home2(request):
     return render(request, 'StockInfoSym.html', {})
+
+def coll(request):
+    return render(request, 'coll.html', {})
 
 def Stc(request, StockInfo_id):
     stock = StockInfo.objects.get(pk = StockInfo_id)
@@ -65,6 +69,15 @@ class StockInfoListView(generics.ListAPIView):
     queryset = StockInfo.objects.all()
     serializer_class = StockInfoSerializer
 
+class StockDataListView(generics.ListAPIView):
+    queryset = StockData.objects.all()
+    serializer_class = StockDataSerializer
+
+class StockDataView(generics.RetrieveAPIView):
+    lookup_field="symbol"
+    queryset = StockData.objects.all()
+    serializer_class = StockDataSerializer
+
 class StockInfoListViewSym(generics.ListAPIView):
     queryset = StockInfoA.objects.all()
     serializer_class = StockInfoASerializer
@@ -74,7 +87,35 @@ class StockInfoViewSym(generics.RetrieveAPIView):
     queryset = StockInfoA.objects.all()
     serializer_class = StockInfoASerializer
 
-
+@csrf_exempt
+def collect_data(request):
+    ticker=request.POST.get("ticker", "null")
+    ticker = ticker.upper()
+    filepath="api\symbol.txt"
+    f = open(filepath, 'r')
+    i=0
+    for line in f:
+         var = line.strip()
+         if DATABASE_ACCESS == True:
+            if StockInfoA.objects.filter(symbol=var).exists(): 
+              continue
+            else:
+                info = requests.get(f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={var}&apikey={APIKEY}').json()
+                i=i+1
+                temp = StockInfoA(symbol=var, data=info)
+                temp.save()
+                if i==4:
+                    time.sleep(65)
+                    i=0
+                price_series = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol={var}&apikey={APIKEY}&outputsize=full').json()
+                i=i+1
+                temp2 = StockData(symbol=var, data=price_series)
+                temp2.save()
+                if i==4:
+                    time.sleep(65)
+                    i=0
+    f.close()
+    return 0
 
 @csrf_exempt
 def get_stock_data(request):
@@ -93,15 +134,12 @@ def get_stock_data(request):
         price_series = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol={ticker}&apikey={APIKEY}&outputsize=full').json()
         
         #package up the data in an output dictionary 
-        output_dictionary = {}
-        output_dictionary['prices'] = price_series
-
         #save the dictionary to database
-        temp = StockData(symbol=ticker, data=json.dumps(output_dictionary))
+        temp = StockData(symbol=ticker, data=price_series)
         temp.save()
 
         #return the data back to the frontend AJAX call 
-        return HttpResponse(json.dumps(output_dictionary), content_type='application/json')
+        return HttpResponse(json.dumps(temp.data), content_type='application/json')
 
 @csrf_exempt
 def get_stock_info(request):

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import StockInfo, StockInfoAd, StockInfoA
+from .models import StockInfo, StockInfoAd, StockInfoA, StockData
 
 
 class StockInfoSerializer(serializers.ModelSerializer):
@@ -8,9 +8,9 @@ class StockInfoSerializer(serializers.ModelSerializer):
         model = StockInfo
         fields = ["data"]
 
-class StockInfoAdSerializer(serializers.ModelSerializer):
+class StockDataSerializer(serializers.ModelSerializer):
     class Meta:
-        model = StockInfoAd
+        model = StockData
         fields = ["symbol", "data"]
 
 class StockInfoASerializer(serializers.ModelSerializer):
