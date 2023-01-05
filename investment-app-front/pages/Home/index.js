@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Slider from '../../components/Slider';
+import Link from 'next/link';
 
 const Home = () => {
 	const [mode, setMode] = useState(true);
@@ -57,7 +58,7 @@ const Home = () => {
 				<div className='button-box'>
 					One app,
 					<br /> to find them all...
-					<StyledButton>Explore</StyledButton>
+					<Link href='/Investments'><StyledButton>Explore</StyledButton></Link>
 				</div>
 			</RightPanel>
 		</MainContainer>

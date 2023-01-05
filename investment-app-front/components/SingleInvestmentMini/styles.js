@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const Investment = styled.div`
-	border-radius: 15px;
+	border-bottom: 3px solid grey;
+	border-left: 3px solid grey;
+    border-radius: 3px;
 	width: 400px;
-	height: 300px;
 	background-color: rgba(34, 34, 34, 0.8);
     margin-top: 50px;
     color: #fff;
@@ -15,6 +16,16 @@ export const Investment = styled.div`
         font-size: 20px;
         border-bottom: 1px solid #E6B325;
         padding-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+
+        span{
+            display: block;
+        }
+
+        #link{
+            display: block;
+        }
     }
 
     .info{
@@ -22,6 +33,10 @@ export const Investment = styled.div`
         justify-content: space-around;
         flex-wrap: wrap;
 
+        #last{
+            width: 90%;
+        }
+        
         span{
             display: block;
             width: 40%;
@@ -35,14 +50,3 @@ export const Investment = styled.div`
     }
 `;
 
-export const StyledButton = styled.div`
-    position: relative;
-    width: 30%;
-    height: 20px;
-    border-radius: 10px;
-    background-color: #E6B325;
-    left: 50%;
-    transform: translate(-50%, 0);
-    text-align: center;
-    color: black;
-`;
