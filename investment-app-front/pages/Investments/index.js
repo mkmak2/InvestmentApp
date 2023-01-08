@@ -1,8 +1,16 @@
 import { Content, Filters, MainContent, Container } from './styles';
 import SignleInvestmentMini from '../../components/SingleInvestmentMini';
 import Navigation from '../../components/Naviation/index';
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+	faChevronLeft,
+	faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 
 const Investments = ({ data }) => {
+	const [counter, setCounter] = useState(0);
+
 	const investments = data.map(i => (
 		<SignleInvestmentMini
 			company={i.data.Name}
@@ -11,9 +19,31 @@ const Investments = ({ data }) => {
 			symbol={i.symbol}
 			currency={i.data.Currency}
 			exchange={i.data.Exchange}
-            industry={i.data.Industry}
+			industry={i.data.Industry}
 		/>
 	));
+
+	const handlePagechange = site => {
+		if (site) {
+			if (counter + 1 < pagination) {
+				setCounter(counter + 1);
+			} else {
+				setCounter(0);
+			}
+		} else {
+			if (counter !== 0) {
+				setCounter(counter - 1);
+			} else {
+				setCounter(pagination - 1);
+			}
+		}
+	};
+
+	const pagination = Math.ceil(investments.length / 8);
+	const firstElement = counter * 8;
+	const lastElement = (counter + 1) * 8;
+
+	const result = investments.slice(firstElement, lastElement);
 
 	return (
 		<MainContent>
@@ -26,19 +56,26 @@ const Investments = ({ data }) => {
 
 				<Container>
 					<div className='sort'>
-						<form>
-							<label htmlFor='sort'>Sort by: </label>
-							<select id='sort'>
-								<option value='none'>-</option>
-								<option value='price down'>price down</option>
-								<option value='price up'>price up</option>
-								<option value='date down'>date down</option>
-								<option value='date up'>date up</option>
-							</select>
-						</form>
+						<div className='arrow' id='left'>
+							<FontAwesomeIcon
+								icon={faChevronLeft}
+								onClick={() => handlePagechange(0)}
+							/>
+						</div>
+						<div className='page'></div>
+						<div className='page'></div>
+						<div className='page'></div>
+						<div className='page'></div>
+						<div className='page'></div>
+						<div className='arrow' id='right'>
+							<FontAwesomeIcon
+								icon={faChevronRight}
+								onClick={() => handlePagechange(1)}
+							/>
+						</div>
 					</div>
 
-					<div className='investments'>{investments}</div>
+					<div className='investments'>{result}</div>
 				</Container>
 			</Content>
 		</MainContent>
