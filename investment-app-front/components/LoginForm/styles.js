@@ -6,6 +6,8 @@ export const StyledForm = styled.form`
     align-items: left;
     justify-content: flex-start;
     padding-top: 10px;
+    text-align: left;
+    color: grey;
 
 
     input:focus{
@@ -17,6 +19,23 @@ export const StyledForm = styled.form`
         color: #fff;
         cursor: pointer;
     }
+
+    .show{
+        text-align: right;
+        height: 0;
+
+        #icon{
+            position: relative;
+            top: -45px;
+            color: ${props => props.color}
+        }
+
+        #icon:hover{
+            cursor: pointer;
+        }
+    }
+
+
 `;
 
 export const StyledInput = styled.input`
