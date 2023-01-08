@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 import api.views
 import acc_management.views as av
 
@@ -21,6 +21,8 @@ urlpatterns = [
     path('collect_data/', api.views.collect_data),
    # path("acc_management/", av.UserDataView.as_view(), name="UserData"),
   #  path("acc_management2/", av.CreateUserDataView.as_view(), name="UserData2"),
-    path("login/", av.loginView, name="api-login"),
-    path("whoami/", av.WhoAmIView.as_view(), name="whoami"),
+  #  path("login/", av.loginView, name="api-login"),
+  #  path("whoami/", av.WhoAmIView.as_view(), name="whoami"),
+  path('', include('acc_management.urls')),
+
 ]
