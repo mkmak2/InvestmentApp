@@ -6,6 +6,7 @@ from .models import StockData, StockInfo, StockInfoA
 from django.core.cache import caches
 from rest_framework import generics
 from .serializers import StockInfoSerializer, StockInfoASerializer, StockDataSerializer
+from datetime import datetime, timedelta
 import time
 
 import requests
@@ -87,6 +88,14 @@ class StockInfoViewSym(generics.RetrieveAPIView):
     queryset = StockInfoA.objects.all()
     serializer_class = StockInfoASerializer
 
+def validate(date_text):
+        try:
+            datetime.strptime(date_text, '%Y-%m-%d')
+            return 1
+        except ValueError:
+            return 0
+
+
 @csrf_exempt
 def collect_data(request):
     ticker=request.POST.get("ticker", "null")
@@ -98,7 +107,38 @@ def collect_data(request):
          var = line.strip()
          if DATABASE_ACCESS == True:
             if StockInfoA.objects.filter(symbol=var).exists(): 
-              continue
+                if StockData.objects.filter(symbol=var).exists():
+                    date = StockData.objects.get(symbol=var)
+                    field_object = StockData._meta.get_field(field_name='data')
+                    field_value = field_object.value_from_object(date)
+                    date1 = str(field_value['Meta Data']['3. Last Refreshed'])
+                    if validate(date1) == 1:
+                        date_object = datetime.strptime(date1, '%Y-%m-%d')
+                    else:
+                        date_object = datetime.strptime(date1, '%Y-%m-%d %H:%M:%S')
+                    date_object1 = date_object.date()
+                    compare = datetime.now() - timedelta(days=7)
+                    compare1 = compare.date()
+                    #d1_ts = time.mktime(date_object.timetuple())
+                    #d2_ts = time.mktime(compare1.timetuple())
+                    if compare1>date_object1:
+                        StockData.objects.get(symbol=var).delete()
+                        price_series = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol={var}&apikey={APIKEY}&outputsize=full').json()
+                        i=i+1
+                        temp2 = StockData(symbol=var, data=price_series)
+                        temp2.save()
+                        if i==4:
+                            time.sleep(65)
+                            i=0
+                    continue
+                else:
+                     price_series = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol={var}&apikey={APIKEY}&outputsize=full').json()
+                     i=i+1
+                     temp2 = StockData(symbol=var, data=price_series)
+                     temp2.save()
+                     if i==4:
+                        time.sleep(65)
+                        i=0
             else:
                 info = requests.get(f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={var}&apikey={APIKEY}').json()
                 i=i+1

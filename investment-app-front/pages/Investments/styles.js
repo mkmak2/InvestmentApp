@@ -68,10 +68,30 @@ export const Container = styled.div`
 
    .sort{
         width: 100%;
-        height: 100px;
+        height: 50px;
         border-bottom: 2px solid #E6B325;
-        padding-top: 50px;
+        padding-top: 10px;
         color: #fff;
+        display: flex;    
+
+        .page{
+            width: 20px;
+            height: 20px;
+            border: 1px solid grey;
+            margin-left: 5px;
+        }
+
+        .arrow{
+            color: #E6B325;
+        }
+
+        .arrow:hover{
+            cursor: pointer;
+        }
+
+        #right{
+            margin-left: 5px;
+        }
 
     select{
         color: #fff;
@@ -135,16 +155,108 @@ export const InvestmentContent = styled.div`
    }
 
    .prices{
-    width: 30vw;
+    width: 40vw;
     min-height: 400px;
-    background-color: blue;
+
+    h2{
+        color:  #E6B325;
+
+        span{
+            color: white;
+        }
+    }
+
+    h3{
+        color: #E6B325;
+    }
+
+
+    .full-prices{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        max-height: 500px;
+        
+        span:nth-child(2n){
+            color: grey;
+        }
+    
+        span{
+            display: block;
+            color: white;
+        }
+    }
    }
 
    .chart{
-    width: 80vw;
+    width: 100%;
     min-height: 400px;
-    background-color: blue;
     margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #E6B325;
+
+    .chart-box{
+        width: 100%;
+        min-height: 500px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .all-charts{
+        width: 60vw;
+        min-height: 400px;
+    }
+
+    .options{
+        width: 20vw;
+        height: 100%;
+
+        button:hover{
+            cursor: pointer;
+            color: white;
+            border: 3px solid white;
+        }
+
+        button:active{
+            transform: scale(0.8, 0.8) translate(-60%, 0);
+        }
+    }
+
+    .single-chart{
+        width: 100%;
+        height: 400px;
+        margin-top: 50px;
+    }
+
    }
 `;
 
+export const StyledSelect = styled.select`
+   width: 40%;
+   height: 30px;
+   border: none;
+   border-radius: 0px;
+   background-color: rgba(60, 60, 61, 0.5);
+   color: white;
+   font-family: 'Martian Mono', monospace;
+
+   option{
+        background-color: rgba(60, 60, 61, 0.5);
+   }
+`;
+
+export const StyledButton = styled.button`
+    width: 100px;
+    height: 30px;
+    border: 2px solid grey;
+    border-radius: 5px;
+    color: grey;
+    position: relative;
+    left: 50%;
+    margin-top: 10px;
+    transform: translate(-50%, 0);
+    transition:  0.2s;
+`;
