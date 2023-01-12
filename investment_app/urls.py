@@ -19,10 +19,7 @@ urlpatterns = [
     path('get_stock_data/', api.views.get_stock_data),
     path('get_stock_infosa/', api.views.get_stock_info),
     path('collect_data/', api.views.collect_data),
-   # path("acc_management/", av.UserDataView.as_view(), name="UserData"),
-  #  path("acc_management2/", av.CreateUserDataView.as_view(), name="UserData2"),
-  #  path("login/", av.loginView, name="api-login"),
-  #  path("whoami/", av.WhoAmIView.as_view(), name="whoami"),
-  path('', include('acc_management.urls')),
+    path('', include('acc_management.urls')),
+    path('', include('price_predict.urls')),
 
 ]

@@ -31,7 +31,7 @@ def userList(request):
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def userDetail(request, pk):
-    users = UserData.objects.get(id=pk)
+    users = UserData.objects.get(username=pk)
     serializer = UserDataSerializer(users, many=False)
 
     return Response(serializer.data)
@@ -48,7 +48,8 @@ def userCreate(request):
 @api_view(['POST'])     #update
 @permission_classes((permissions.AllowAny,))
 def userUpdate(request, pk):
-    users = UserData.objects.get(id=pk)
+    lookup_field="username"
+    users = UserData.objects.get(username=pk)
     serializer = UserDataSerializer(instance=users, data=request.data)
 
     if serializer.is_valid():
@@ -59,7 +60,8 @@ def userUpdate(request, pk):
 @api_view(['DELETE'])     #delete
 @permission_classes((permissions.AllowAny,))
 def userDelete(request, pk):
-    users = UserData.objects.get(id=pk)
+    users = UserData.objects.get(username=pk)
     users.delete()
 
     return Response("Item deleted")
+
