@@ -6,6 +6,11 @@ import { useState } from 'react';
 const RegisterForm = () => {
 
     const [type, setType] = useState(true);
+    const [data, setData] = useState({
+        username: '',
+        password: '',
+        repeatPassword: ''
+    })
 
     const handleClick = (e) =>{
         e.preventDefault();

@@ -182,6 +182,21 @@ const InvestmentDeatlis = ({
 		</div>
 	));
 
+	const [predictedPrice, setPredictedPrice] = useState(null);
+
+	const handlePredictPrice = async () => {
+		
+		setPredictedPrice('Please wait, it may take a few seconds...');
+		
+		const res = await fetch('http://127.0.0.1:8000/price/' + investment.symbol);
+		const answ = await res.json();
+		
+		if(answ){
+		setPredictedPrice(Object.values(answ[0]));
+		}
+		
+	};
+
 	return (
 		<MainContent>
 			<Navigation />
@@ -228,6 +243,13 @@ const InvestmentDeatlis = ({
 								{options}
 							</StyledSelect>
 							<StyledButton onClick={handleCompareClick}>Compare</StyledButton>
+							<div className='predict'>
+								<button id='predictButton' onClick={handlePredictPrice}>
+									Predict price
+								</button>
+								<span>Price for next week: </span>
+								<span>{predictedPrice}</span>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -220,8 +220,39 @@ export const InvestmentContent = styled.div`
             border: 3px solid white;
         }
 
-        button:active{
-            transform: scale(0.8, 0.8) translate(-60%, 0);
+        .predict{
+            position: relative;
+            width: 90%;
+            left: 50%;
+            transform: translate(-50%,0);
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            button{
+                border: 2px solid grey;
+                border-radius: 5px;
+                color: grey;
+                height: 40px;
+                margin-bottom: 30px;
+                transition: 0.2s;
+            }
+
+            button:hover{
+                cursor: pointer;
+                color: white;
+                border: 3px solid white;
+            }
+
+            span{
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            span:nth-child(3){
+                color: white;
+            }
         }
     }
 
@@ -249,7 +280,6 @@ export const StyledSelect = styled.select`
 `;
 
 export const StyledButton = styled.button`
-    width: 100px;
     height: 30px;
     border: 2px solid grey;
     border-radius: 5px;

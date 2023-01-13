@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .form import UploadForm, UploadForm2
-from .models import StockData, StockInfo, StockInfoA
+from .models import StockData,  StockInfoA
 from django.core.cache import caches
 from rest_framework import generics
 from .serializers import StockInfoSerializer, StockInfoASerializer, StockDataSerializer
@@ -31,23 +31,6 @@ def home2(request):
 def coll(request):
     return render(request, 'coll.html', {})
 
-def Stc(request, StockInfo_id):
-    stock = StockInfo.objects.get(pk = StockInfo_id)
-    if stock is not None:
-        return 0
-
-def Stock(request, StockInfo_id):
-    stock = caches.get(StockInfo_id)
-    if stock:
-        print('cache')
-        return render(request, 'Stock.html', {'StockInfo': stock})
-    
-    else:
-        print('db')
-        stock = get_object_or_404(StockInfo, pk=StockInfo_id)
-        if stock is not None:
-            caches.set(StockInfo_id, stock)
-            return render(request, 'Stock.html', {'StockInfo': stock})
 
 def upload(request):
     if request.POST:
@@ -65,10 +48,6 @@ def upload2(request):
     return render(request, 'upload2.html', {'form' : UploadForm2})
 
 
-
-class StockInfoListView(generics.ListAPIView):
-    queryset = StockInfo.objects.all()
-    serializer_class = StockInfoSerializer
 
 class StockDataListView(generics.ListAPIView):
     queryset = StockData.objects.all()
