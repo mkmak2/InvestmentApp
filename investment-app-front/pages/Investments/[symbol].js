@@ -183,10 +183,11 @@ const InvestmentDeatlis = ({
 	));
 
 	const [predictedPrice, setPredictedPrice] = useState(null);
+	const dots = <div className='dots'><div className='dot'></div><div className='dot'></div><div className='dot'></div></div>;
 
 	const handlePredictPrice = async () => {
 		
-		setPredictedPrice('Please wait, it may take a few seconds...');
+		setPredictedPrice(dots);
 		
 		const res = await fetch('http://127.0.0.1:8000/price/' + investment.symbol);
 		const answ = await res.json();
@@ -249,6 +250,7 @@ const InvestmentDeatlis = ({
 								</button>
 								<span>Price for next week: </span>
 								<span>{predictedPrice}</span>
+
 							</div>
 						</div>
 					</div>

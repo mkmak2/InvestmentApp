@@ -43,7 +43,7 @@ def price(request, str):
     scaled_data = scaler.fit_transform(data['Close'].values.reshape(-1,1))
 
 
-    prediction_days = 60
+    prediction_days = 7
 
     x_train = []
     y_train = []
