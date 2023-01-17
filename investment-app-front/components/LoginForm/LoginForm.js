@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
-const LoginForm = () => {
+const LoginForm = ({ onClick }) => {
 
     const [type, setType] = useState(true);
     const [username, setUsername] = useState('');
@@ -15,7 +15,16 @@ const LoginForm = () => {
         const usernameToSend = username;
         const passwordToSend = password;
 
-        //metoda do wysyłania
+        if(usernameToSend && passwordToSend){
+            const data = {
+                username: usernameToSend,
+                password: passwordToSend,
+                is_logged: true
+            };
+
+            onClick(data,usernameToSend);
+            window.location.reload(false);
+        }
     }
     
     const display = type ? 'password' : 'text';

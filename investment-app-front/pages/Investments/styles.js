@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const MainContent = styled.div`
    width: 100%;
@@ -189,6 +190,8 @@ export const InvestmentContent = styled.div`
    display: flex;
    justify-content: space-around;
    flex-wrap: wrap;
+
+
 
    .general-info{
         width: 45vw;
@@ -383,4 +386,12 @@ export const StyledButton = styled.button`
     margin-top: 10px;
     transform: translate(-50%, 0);
     transition:  0.2s;
+`;
+
+export const StyledIconAdd = styled(FontAwesomeIcon)`
+   color: ${props => props.color};
+   
+   &:hover{
+    cursor:pointer;
+   }
 `;

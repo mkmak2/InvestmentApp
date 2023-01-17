@@ -72,7 +72,7 @@ def userUpdate(request, pk):
             serializer.save()
         
          return Response(serializer.data)
-    else:
+    else:   
         return HttpResponse(content="", status=304)
         
 

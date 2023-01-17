@@ -4,12 +4,14 @@ import {
 	InvestmentContent,
 	StyledSelect,
 	StyledButton,
+	StyledIconAdd
 } from './styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCircleLeft, faHeart } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import Chart from '../../components/Chart/Chart.js';
 import { useState } from 'react';
+
 
 export const getStaticPaths = async () => {
 	const res = await fetch('http://127.0.0.1:8000/api-sym');
@@ -55,8 +57,12 @@ export const getStaticProps = async context => {
 		symbols.push(e.symbol);
 	});
 
+	const re = await fetch('http://127.0.0.1:8000/user-list/');
+    const an = await re.json();
+    const loggedUser = an.filter(user => user.is_logged);
+
 	return {
-		props: { investment: data, prices, fullPricesData, symbols, allStock },
+		props: { investment: data, prices, fullPricesData, symbols, allStock, loggedUser },
 	};
 };
 
@@ -66,7 +72,12 @@ const InvestmentDeatlis = ({
 	fullPricesData,
 	symbols,
 	allStock,
+	loggedUser
 }) => {
+
+	//flag is someone logged in
+	const isSomeoneLogged = loggedUser.length ? true : false;
+
 	const date = Object.keys(fullPricesData).slice(0, 54); //last year dates
 	const lastUpdate = date[0]; //last date
 
@@ -197,6 +208,88 @@ const InvestmentDeatlis = ({
 		}
 		
 	};
+	
+	let color = '';
+	if(loggedUser && loggedUser.length !==0){
+		if(loggedUser[0].investments && loggedUser[0].investments.indexOf(investment.symbol) !== -1){
+			color = '#E6B325';
+		} else {
+			color = 'white';
+		}
+	}
+
+	const addToFav = async () => {
+
+		if(isSomeoneLogged){	
+
+			if(loggedUser[0].investments && loggedUser[0].investments !== []){
+				if(loggedUser[0].investments.indexOf(investment.symbol) === -1){
+					const newTable = loggedUser[0].investments;
+					const addInvToTable = investment.symbol;
+					newTable.push(addInvToTable);
+					const addData = {
+							username: loggedUser[0].username,
+							password: loggedUser[0].password,
+							investments: newTable
+						}
+						try{
+								const res = await fetch(`http://127.0.0.1:8000/user-update/${loggedUser[0].username}/`, {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json',
+									},
+									body: JSON.stringify(addData),
+								});
+								console.log(res)
+								} catch(e) {
+									console.log(e);
+									}
+					} else{
+						const index = loggedUser[0].investments.indexOf(investment.symbol);
+						const newTable = loggedUser[0].investments;
+						newTable.splice(index,1);
+						const addData = {
+							username: loggedUser[0].username,
+							password: loggedUser[0].password,
+							investments: newTable
+						};
+							try{
+								const res = await fetch(`http://127.0.0.1:8000/user-update/${loggedUser[0].username}/`, {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json',
+									},
+									body: JSON.stringify(addData),
+								});
+								console.log(res)
+								} catch(e) {
+									console.log(e);
+								}
+					}
+			}else{
+				const newTable = [];
+				newTable.push(investment.symbol);
+				const addData = {
+					username: loggedUser[0].username,
+					password: loggedUser[0].password,
+					investments: newTable
+				};
+				try{
+					const res = await fetch(`http://127.0.0.1:8000/user-update/${loggedUser[0].username}/`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(addData),
+					});
+					console.log(res)
+					} catch(e) {
+						console.log(e);
+					}
+			}		
+	}
+	window.location.reload(true);
+}
 
 	return (
 		<MainContent>
@@ -205,7 +298,7 @@ const InvestmentDeatlis = ({
 				<Link href='/Investments'>
 					<FontAwesomeIcon icon={faCircleLeft} id='back' />
 				</Link>
-				<span>{investment.data.Name}</span>
+				<span>{investment.data.Name} {isSomeoneLogged && (<StyledIconAdd color={color} icon={faHeart} onClick={addToFav}/>)}</span>
 			</div>
 			<InvestmentContent>
 				<div className='general-info'>
