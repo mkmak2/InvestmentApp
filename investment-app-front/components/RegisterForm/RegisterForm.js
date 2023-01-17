@@ -12,13 +12,20 @@ const RegisterForm = () => {
 
     
     const addUser = async (data) => {
-        const res = await fetch('http://127.0.0.1:8000/user-create/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
+
+        try{
+            const res = await fetch('http://127.0.0.1:8000/user-create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if(res.status === 303) console.log('taki user juz jest')
+        } catch(e) {
+            console.log(e);
+        }
     }
 
     const handleUserChange = e => {
@@ -39,16 +46,18 @@ const RegisterForm = () => {
         const passwordToSend = password;
         const repeatPasswordToSend = repeatPassword;
 
-        if(passwordToSend === repeatPasswordToSend && passwordToSend && usernameToSend){
-
-            const data = {
-                username: usernameToSend,
-                password: passwordToSend,
+        if(passwordToSend && usernameToSend && repeatPasswordToSend){
+            if(passwordToSend === repeatPasswordToSend){
+                const data = {
+                    username: usernameToSend,
+                    password: passwordToSend,
+                }
+                addUser(data);
+            }else{
+                console.log('hasla nie pasują do siebie')
             }
 
-            addUser(data);
-
-        } else console.log('chuj')
+        } else console.log('nalezy wypelnic wszystkie pola')
     }
 
 
