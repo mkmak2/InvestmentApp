@@ -6,5 +6,5 @@ from .models import UserData
 class  UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
-        fields = ("username", "password",  "email", "is_logged")
+        fields = ("username", "password",  "is_logged", "investments")
 
