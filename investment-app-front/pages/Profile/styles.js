@@ -46,3 +46,13 @@ export const RightPanel = styled.div`
 	background-position: bottom;
 
 `;
+
+export const UserPanel = styled.div`
+    width: 80%;
+    height: 80%;
+    background-color: red;
+    position: relative;
+    left: 100px;
+    top: 100px;
+    display: flex;
+`;
