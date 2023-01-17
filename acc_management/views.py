@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from .serializers import UserDataSerializer
 from .models import UserData
-
+from django.http import HttpResponse
 
 
 @api_view(['GET'])
@@ -38,13 +38,19 @@ def userDetail(request, pk):
     return Response(serializer.data)
 
 @api_view(['POST'])     #create
-@permission_classes((permissions.AllowAny,))
+@permission_classes((permissions.AllowAny,)) 
 def userCreate(request):
+    name = request.data.get('username')
     serializer = UserDataSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+    if not(UserData.objects.filter(username = name).exists()):
+         if serializer.is_valid():
+            serializer.save()
         
-    return Response(serializer.data)
+         return Response(serializer.data)
+    else:
+        return HttpResponse(content="", status=303)
+    
+   
 
 @api_view(['POST'])     #update
 @permission_classes((permissions.AllowAny,))
