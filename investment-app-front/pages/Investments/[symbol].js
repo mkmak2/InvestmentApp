@@ -36,6 +36,7 @@ export const getStaticProps = async context => {
 	//fetch stock data for single investment
 	const response = await fetch('http://127.0.0.1:8000/stock-sym/' + symbol);
 	const answer = await response.json();
+
 	const fullPricesData = answer.data.prices
 		? Object.values(answer.data.prices)[1]
 		: Object.values(answer.data)[1];
@@ -133,31 +134,35 @@ const InvestmentDeatlis = ({
 
 	const handleCompareClick = async () => {
 		if (!symbolToCompare) return false;
-		if(charts.length>0) setCharts([]);
+		if (charts.length > 0) setCharts([]);
 
 		const current = allStock.filter(e => e.symbol == symbolToCompare);
-		console.log(current)
-		const lastYearPrices = current[0].data.prices ? Object.values(current[0].data.prices)[1] : Object.values(current[0].data)[1];
-		const dates = Object.keys(lastYearPrices).slice(0,54);
-		const preparePrices = Object.values(lastYearPrices).slice(0,54);
+
+		const lastYearPrices = current[0].data.prices
+			? Object.values(current[0].data.prices)[1]
+			: Object.values(current[0].data)[1];
+		const dates = Object.keys(lastYearPrices).slice(0, 54);
+		const preparePrices = Object.values(lastYearPrices).slice(0, 54);
 		const prices = [];
 
 		preparePrices.forEach(e => {
-			prices.push(Object.values(e)[3])
-		})
+			prices.push(Object.values(e)[3]);
+		});
 
 		const dataForChart = {
 			id: storedSymbols.length,
-			chartData:{
+			chartData: {
 				labels: dates.reverse(),
-				datasets: [{
-					label: symbolToCompare,
-					data: prices.reverse(),
-					borderColor: '#E6B325',
-					backgroundColor: '#E6B325',
-				}]
-			}
-		}
+				datasets: [
+					{
+						label: symbolToCompare,
+						data: prices.reverse(),
+						borderColor: '#E6B325',
+						backgroundColor: '#E6B325',
+					},
+				],
+			},
+		};
 
 		setCharts(prev => [...prev, dataForChart]);
 		setStoredSymbols(prev => [...prev, symbolToCompare]);
@@ -169,14 +174,29 @@ const InvestmentDeatlis = ({
 
 	const handleClose = () => {
 		setCharts([]);
-	}
+	};
 
 	const chartsToCompare = charts.map(e => (
-		<div key={e.id} className="single-chart">
+		<div key={e.id} className='single-chart'>
 			<Chart data={e.chartData} close={true} onClick={handleClose} />
 		</div>
 	));
 
+	const [predictedPrice, setPredictedPrice] = useState(null);
+	const dots = <div className='dots'><div className='dot'></div><div className='dot'></div><div className='dot'></div></div>;
+
+	const handlePredictPrice = async () => {
+		
+		setPredictedPrice(dots);
+		
+		const res = await fetch('http://127.0.0.1:8000/price/' + investment.symbol);
+		const answ = await res.json();
+		
+		if(answ){
+		setPredictedPrice(Object.values(answ[0]));
+		}
+		
+	};
 
 	return (
 		<MainContent>
@@ -212,7 +232,9 @@ const InvestmentDeatlis = ({
 					<h2>Last year price-changing visualization</h2>
 					<div className='chart-box'>
 						<div className='all-charts'>
-							<div className='single-chart'><Chart data={dataForChart}/></div>
+							<div className='single-chart'>
+								<Chart data={dataForChart} />
+							</div>
 							{chartsToCompare}
 						</div>
 						<div className='options'>
@@ -222,6 +244,14 @@ const InvestmentDeatlis = ({
 								{options}
 							</StyledSelect>
 							<StyledButton onClick={handleCompareClick}>Compare</StyledButton>
+							<div className='predict'>
+								<button id='predictButton' onClick={handlePredictPrice}>
+									Predict price
+								</button>
+								<span>Price for next week: </span>
+								<span>{predictedPrice}</span>
+
+							</div>
 						</div>
 					</div>
 				</div>

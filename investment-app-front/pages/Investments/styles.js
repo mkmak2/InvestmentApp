@@ -50,13 +50,70 @@ export const Content = styled.div`
 
 export const Filters = styled.div`
    width: 20%;
-   height: 500px;
    background-color: rgba(34, 34, 34, 0.5);
    border-radius: 20px;
    margin-left: 10px;
    color: #fff;
    padding: 10px;
-`;
+
+   #filter-header{
+    display: block;
+    font-size: 28px;
+    margin-bottom: 30px;
+   }
+
+   .checkboxes{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: 10px;
+   }
+
+   .single-checkbox{
+    margin-top: 10px;
+    font-size: 12px;
+    color: grey;
+    display: flex;
+    align-items:center;
+    
+    .pure-checkbox{
+        -webkit-appearance: none;
+        width: 10px;
+        height: 10px;
+        background-color: #282A3A;
+        display: inline-block;
+        border-radius: 1px;
+        cursor: pointer;
+    }
+
+    label{
+        cursor: pointer;
+    }
+
+    .pure-checkbox:checked{
+        background-color: #E6B325;
+    }   
+}
+
+    button{
+        border: 2px solid grey;
+        border-radius: 5px;
+        color: grey;
+        margin-top: 20px;
+        margin-right: 20px;
+        width: 100px;   
+        height: 30px;
+        font-size: 18px;
+        transition: 0.2s;
+    }
+
+    button:hover{
+        border: 3px solid white;
+        color: white;
+        cursor: pointer;
+    }
+
+`;  
 
 export const Container = styled.div`
    width: 70%;
@@ -77,8 +134,10 @@ export const Container = styled.div`
         .page{
             width: 20px;
             height: 20px;
-            border: 1px solid grey;
             margin-left: 5px;
+            line-high: 100%;
+            text-align: center;
+            color: #E6B325;
         }
 
         .arrow{
@@ -220,8 +279,74 @@ export const InvestmentContent = styled.div`
             border: 3px solid white;
         }
 
-        button:active{
-            transform: scale(0.8, 0.8) translate(-60%, 0);
+        .predict{
+            position: relative;
+            width: 90%;
+            left: 50%;
+            transform: translate(-50%,0);
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            button{
+                border: 2px solid grey;
+                border-radius: 5px;
+                color: grey;
+                height: 40px;
+                margin-bottom: 30px;
+                transition: 0.2s;
+            }
+
+            button:hover{
+                cursor: pointer;
+                color: white;
+                border: 3px solid white;
+            }
+
+            span{
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            span:nth-child(3){
+                color: white;
+            }
+
+            @keyframes wave {
+                0%, 60%, 100% {
+                    transform: initial;
+                }
+            
+                30% {
+                    transform: translateY(-15px);
+                }
+            }
+
+            .dots{
+               position: relative;
+               min-width: 60px;
+               display: flex;
+               justify-content: space-evenly;
+               align-items: top;
+               margin-top: 10px;
+            }
+
+            .dot{
+                width: 10px;
+                height:10px;
+                background-color: white;
+                border-radius: 50%;
+                animation: wave 1.3s linear infinite;
+
+                &:nth-child(2) {
+			        animation-delay: -1.1s;
+		        }
+
+                &:nth-child(3) {
+                    animation-delay: -0.9s;
+                }
+            }
         }
     }
 
@@ -249,7 +374,6 @@ export const StyledSelect = styled.select`
 `;
 
 export const StyledButton = styled.button`
-    width: 100px;
     height: 30px;
     border: 2px solid grey;
     border-radius: 5px;
