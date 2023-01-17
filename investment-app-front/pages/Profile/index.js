@@ -1,8 +1,10 @@
-import { LeftPanel, MainContainer, RightPanel, UserPanel   } from './styles';
+import { LeftPanel, MainContainer, RightPanel, UserPanel, StyledIcon } from './styles';
 import Navigation from './../../components/Naviation/index';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import RegisterForm from '../../components/RegisterForm/RegisterForm';
 import { useState } from 'react';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 const Profile = ({ data }) => {
     
@@ -12,13 +14,28 @@ const Profile = ({ data }) => {
             <LeftPanel>
                 {isLogged ? (
                     <UserPanel>
-                        <h1>Hello User!</h1>
+                        <h1>Welcome <span>User</span></h1>
+                        <div className='saved-inv'>
+                            <h2>Your saved investments:</h2>
+                            <div className='inv-box'>
+                                <div className='single-inv'><span>dupa</span><StyledIcon icon={faXmark}/></div>
+                                <div className='single-inv'><span>dupa</span><StyledIcon icon={faXmark}/></div>
+                                <div className='single-inv'><span>dupa</span><StyledIcon icon={faXmark}/></div>
+                                <div className='single-inv'><span>dupa</span><StyledIcon icon={faXmark}/></div>
+                            </div>
+                            <div className='add-more'>
+                                <span>Want to add more investments to follow?</span>
+                                <button><Link href='/Investments'>Explore</Link></button>
+                            </div>
+                            <button>Log out</button>
+                        </div>
                     </UserPanel>
 
                 ): (
                     <div className="form-box">
                     <LoginForm />
-                    <div className="line"></div>
+                    <div className="line">
+                    </div>
                     <RegisterForm />
                     </div> 
                 )}

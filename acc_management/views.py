@@ -48,7 +48,7 @@ def userCreate(request):
         
         return Response(serializer.data)
     else:
-        return HttpResponse(content="", status=303)
+        return HttpResponse(content="This user already exist", status=303)
     
    
 

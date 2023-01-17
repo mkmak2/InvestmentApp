@@ -6,8 +6,9 @@ import { useState } from 'react';
 const LoginForm = () => {
 
     const [type, setType] = useState(true);
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleClick = (e) =>{
         e.preventDefault();
@@ -38,6 +39,7 @@ const LoginForm = () => {
             <div className="show">
             <FontAwesomeIcon icon={faEye} id='icon' onClick={() => setType(!type)}/>
             </div>
+            {error && <span id='error'>ERROR</span>}
             <StyledButton onClick={handleClick}>Sing in</StyledButton>
         </StyledForm>
         </div>

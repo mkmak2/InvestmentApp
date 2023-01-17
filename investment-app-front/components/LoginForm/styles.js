@@ -35,6 +35,10 @@ export const StyledForm = styled.form`
         }
     }
 
+    #error{
+        font-size: 10px;
+        color: #E6B325;
+    }
 
 `;
 

@@ -6,10 +6,10 @@ import { useState } from 'react';
 const RegisterForm = () => {
 
     const [type, setType] = useState(true);
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const [repeatPassword, setRepeatPassword] = useState();
-
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
+    const [error, setError] = useState('');
     
     const addUser = async (data) => {
 
@@ -22,10 +22,17 @@ const RegisterForm = () => {
                 body: JSON.stringify(data),
             });
 
-            if(res.status === 303) console.log('taki user juz jest')
+            if(res.status === 303) setError('This accound already exist!');
+            else clearForm();
         } catch(e) {
             console.log(e);
         }
+    }
+    const clearForm = () => {
+        setPassword('');
+        setRepeatPassword('');
+        setUsername('');
+        setError('You have succesfully register in the system!')
     }
 
     const handleUserChange = e => {
@@ -54,10 +61,10 @@ const RegisterForm = () => {
                 }
                 addUser(data);
             }else{
-                console.log('hasla nie pasują do siebie')
+                setError("Password doesn't match to each other!")
             }
 
-        } else console.log('nalezy wypelnic wszystkie pola')
+        } else setError('You have to fill every field!')
     }
 
 
@@ -74,7 +81,7 @@ const RegisterForm = () => {
             <FontAwesomeIcon icon={faEye} id='icon' onClick={() => setType(!type)}/>
             </div>
             <StyledInput type='password' placeholder='Repeat password..' value={repeatPassword} onChange={handleRepeatPasswordChange}/>
-            
+            {error && <span id='error'>{error}</span>}
             <StyledButton onClick={handleClick}>Submit</StyledButton>
         </StyledForm>
         </div>
