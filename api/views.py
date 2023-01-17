@@ -101,11 +101,9 @@ def collect_data(request):
                     #d1_ts = time.mktime(date_object.timetuple())
                     #d2_ts = time.mktime(compare1.timetuple())
                     if compare1>date_object1:
-                        StockData.objects.get(symbol=var).delete()
                         price_series = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol={var}&apikey={APIKEY}&outputsize=full').json()
                         i=i+1
-                        temp2 = StockData(symbol=var, data=price_series)
-                        temp2.save()
+                        StockData.objects.filter(symbol=var).update(data=price_series)
                         if i==4:
                             time.sleep(65)
                             i=0
