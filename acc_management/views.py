@@ -43,10 +43,10 @@ def userCreate(request):
     name = request.data.get('username')
     serializer = UserDataSerializer(data=request.data)
     if not(UserData.objects.filter(username = name).exists()):
-         if serializer.is_valid():
+        if serializer.is_valid():
             serializer.save()
         
-         return Response(serializer.data)
+        return Response(serializer.data)
     else:
         return HttpResponse(content="", status=303)
     
