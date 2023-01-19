@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .form import UploadForm, UploadForm2
+from .form import UploadForm2
 from .models import StockData,  StockInfoA
 from django.core.cache import caches
 from rest_framework import generics
-from .serializers import StockInfoSerializer, StockInfoASerializer, StockDataSerializer
+from .serializers import StockInfoASerializer, StockDataSerializer
 from datetime import datetime, timedelta
 import time
 
@@ -30,15 +30,6 @@ def home2(request):
 
 def coll(request):
     return render(request, 'coll.html', {})
-
-
-def upload(request):
-    if request.POST:
-        form = UploadForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect(home)
-    return render(request, 'upload.html', {'form' : UploadForm})
 
 def upload2(request):
     if request.POST:
