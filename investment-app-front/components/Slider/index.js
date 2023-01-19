@@ -16,24 +16,25 @@ const Slider = ({ whiteColor, yellowColor }) => {
 	const option = [
 		{
 			title: 'Search investments',
-			info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, facere ad aut ut officia pariatur temporibus molestias modi id ipsum fugit, voluptate porro, laborum quasi rem quae eius nostrum eos.',
+			info: "You can explore a lot of investments from diffrent sectors and exchanges. You can also choose specyfic sector, industry or exhange which match your preferences to filter list of investemnts. Our database is still updating so don't worry if u can't find perfect invstment right now!",
 			icon: faMagnifyingGlassDollar,
 		},
 		{
+			title: "Learn about company's history",
+			info: 'Aplication automaticly generate dynamic site for each investemnt. It means that if our database is updated, system will generate new site or update exsisted on for each investent form the list. In this site you can learn about general investemnt data, read about company history and see prices from last year on list or a chart.',
+			icon: faBook,
+		},
+		{
 			title: 'Compare charts',
-			info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, facere ad aut ut officia pariatur temporibus molestias modi id ipsum fugit, voluptate porro, laborum quasi rem quae',
+			info: "Each investment side generate chart with its stock data form last year. You can choose another investment form section to generate new chart under first one. If u hover a specyfic point on chart u will see detailed price and date so u can compare charts easily",
 			icon: faChartSimple,
 		},
 		{
 			title: 'Predict Price',
-			info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, facere ad aut ut officia pariatur temporibus molestias modi id ipsum fugit, voluptate porro, laborum quasi rem quae eius nostrum eos.gwergerwgqegbearvdfsbsnwtnwthqgqtw	qtwrfqw',
+			info: `You can see price history from last year, but maybe you wonder "How this price will change in the future?". Don't worry! Our app can also use advance math and machine learning function to predict price for next update on stock.`,
 			icon: faCalculator,
 		},
-		{
-			title: "Learn about company's history",
-			info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, facere ad aut ut officia pariatur temporibus molestias modi id ipsum fugit, voluptate porro, laborum quasi rem quae eius nostrum eos.bqibffoiebfqefewgf',
-			icon: faBook,
-		},
+
 	];
 
 	const handleSwap = side => {
