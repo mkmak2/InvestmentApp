@@ -11,6 +11,7 @@ import { faCircleLeft, faHeart } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import Chart from '../../components/Chart/Chart.js';
 import { useState } from 'react';
+import { makeEmptyArr } from './utils/utils';
 
 
 export const getStaticPaths = async () => {
@@ -91,13 +92,11 @@ const InvestmentDeatlis = ({
 	const actualPrice = closedPrices[0]; //last price
 
 	//this aray is used only to map dates and prices into 1 span
-	const foo = [];
-	for (let i = 1; i <= 53; i++) {
-		foo.push(i);
-	}
+	const emptyArr = makeEmptyArr(53);
+
 
 	//list of prices with dates
-	const pricesList = foo.slice(1).map(e => {
+	const pricesList = emptyArr.slice(1).map(e => {
 		if (closedPrices[e]) {
 			return (
 				<span key={e}>
@@ -210,13 +209,18 @@ const InvestmentDeatlis = ({
 	};
 	
 	let color = '';
-	if(loggedUser && loggedUser.length !==0){
-		if(loggedUser[0].investments && loggedUser[0].investments.indexOf(investment.symbol) !== -1){
-			color = '#E6B325';
-		} else {
-			color = 'white';
+
+	const changeColor = () => {
+		if(loggedUser && loggedUser.length !==0){
+			if(loggedUser[0].investments && loggedUser[0].investments.indexOf(investment.symbol) !== -1){
+				color = '#E6B325';
+			} else {
+				color = 'white';
+			}
 		}
 	}
+
+	changeColor();
 
 	const addToFav = async () => {
 

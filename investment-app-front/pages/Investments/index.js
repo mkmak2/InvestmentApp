@@ -7,6 +7,7 @@ import {
 	faChevronLeft,
 	faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import { makePagination } from './utils/utils';
 
 const Investments = ({ data }) => {
 
@@ -85,7 +86,7 @@ const Investments = ({ data }) => {
 		}
 	};
 
-	const pagination = Math.ceil(investments.length / 8);
+	const pagination = makePagination(investments.length, 8);
 	const firstElement = counter * 8;
 	const lastElement = (counter + 1) * 8;
 
