@@ -1,14 +1,16 @@
 import { StyledButton, StyledForm, StyledInput } from './styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Router from 'next/router'
 
-const LoginForm = ({ onClick }) => {
+const LoginForm = ({ onClick, err }) => {
+
 
     const [type, setType] = useState(true);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(err);
 
     const handleClick = (e) =>{
         e.preventDefault();
@@ -23,8 +25,11 @@ const LoginForm = ({ onClick }) => {
             };
 
             onClick(data,usernameToSend);
-            window.location.reload(false);
+        }else{
+            setError('You have to fill every field!');
+            return false;
         }
+        setError(err);
     }
     
     const display = type ? 'password' : 'text';
@@ -38,7 +43,7 @@ const LoginForm = ({ onClick }) => {
         setPassword(e.target.value)
     }
 
-
+    
     return ( 
         <div>
             <h1>Sing in</h1>
@@ -48,7 +53,7 @@ const LoginForm = ({ onClick }) => {
             <div className="show">
             <FontAwesomeIcon icon={faEye} id='icon' onClick={() => setType(!type)}/>
             </div>
-            {error && <span id='error'>ERROR</span>}
+            {error && <span id='error'>{error}</span>}
             <StyledButton onClick={handleClick}>Sing in</StyledButton>
         </StyledForm>
         </div>

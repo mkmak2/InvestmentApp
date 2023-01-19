@@ -10,6 +10,7 @@ const Profile = ({ data }) => {
     const dataLength = data.length;
     const toggleLogged = dataLength ? true : false;
     const [isLogged, setIsLogged] = useState(toggleLogged);
+    const [error, setError] = useState();
 
     const handleLogOut = async () => {
 
@@ -28,11 +29,10 @@ const Profile = ({ data }) => {
                 },
                 body: JSON.stringify(dataToSend),
             });
-            setIsLogged(false);
+            window.location.reload(true);
     } catch(e){
         console.log(e)
     }
-    window.location.reload(true);
 }
 
 const logIn = async (data, user) => {
@@ -45,14 +45,14 @@ const logIn = async (data, user) => {
             body: JSON.stringify(data),
         });
         console.log(res)
-
-        // if(res.status === 303) setError("This user doesn't exist!");
-        // else if(res.status === 304) setError("Incorrect password!");
+        if(res.status === 500) setError("This user doesn't exist!");
+        else if(res.status === 304) setError("Incorrect password!");
+        else window.location.reload(true);
     } catch(e) {
         console.log(e);
     }
 }
-
+    
     const handleDelete = async inv => {
         const tab = data[0].investments;
         const index = tab.indexOf(inv);
@@ -105,7 +105,7 @@ const logIn = async (data, user) => {
 
                 ): (
                     <div className="form-box">
-                    <LoginForm onClick={logIn}/>
+                    <LoginForm onClick={logIn} err={error}/>
                     <div className="line">
                     </div>
                     <RegisterForm />
@@ -122,7 +122,7 @@ const logIn = async (data, user) => {
  
 export default Profile;
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
     const res = await fetch('http://127.0.0.1:8000/user-list/');
     const answer = await res.json();
 
